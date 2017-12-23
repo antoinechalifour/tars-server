@@ -1,7 +1,8 @@
 module.exports = `
   type Query {
     feed: [Feed],
-    lights: [Light]
+    lights: [Light],
+    weather(lon: Float, lat: Float): Weather
   }
 
   type Feed {
@@ -16,6 +17,16 @@ module.exports = `
     name: String,
     type: String,
     status: String
+  }
+
+  type Weather {
+    city: String,
+    kind: String,
+    temp: Float,
+    temp_min: Float,
+    temp_max: Float,
+    pressure: Float,
+    wind_speed: Float
   }
 
   type Mutation {

@@ -20,7 +20,8 @@ container.register({
 
   // Services (business layer)
   rssService: asFunction(require('./src/services/Rss')),
-  lightsService: asFunction(require('./src/services/LightsDomoticz'))
+  lightsService: asFunction(require('./src/services/LightsDomoticz')),
+  weatherService: asFunction(require('./src/services/WeatherService'))
 })
 
 // App configuration
