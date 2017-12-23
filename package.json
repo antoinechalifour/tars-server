@@ -10,6 +10,7 @@
     "apollo-server-koa": "^1.3.2",
     "array-flatten": "^2.1.1",
     "awilix": "^3.0.0",
+    "axios": "^0.17.1",
     "dotenv": "^4.0.0",
     "graphql": "^0.12.3",
     "graphql-tools": "^2.14.1",

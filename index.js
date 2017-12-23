@@ -1,4 +1,5 @@
 require('dotenv').config()
+const port = process.env.PORT
 
 // Database configuration
 const Knex = require('knex')
@@ -18,12 +19,12 @@ container.register({
   rssRepository: asFunction(require('./src/repositories/Rss')),
 
   // Services (business layer)
-  rssService: asFunction(require('./src/services/Rss'))
+  rssService: asFunction(require('./src/services/Rss')),
+  lightsService: asFunction(require('./src/services/LightsDomoticz'))
 })
 
 // App configuration
 const App = require('./src/App')
-const port = process.env.PORT
 const app = App({ container })
 
 app.listen(port, () => console.log(`App running @ http://0.0.0.0:${port}`))
