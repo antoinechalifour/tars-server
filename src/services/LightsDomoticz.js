@@ -28,7 +28,7 @@ module.exports = () => {
       try {
         const nextStatus = isOn ? 'On' : 'Off'
         await axios.get(
-          `http://192.168.1.30:8080/json.htm?type=command&param=switchlight&idx=${lightId}&switchcmd=${nextStatus}&level=0&passcode=`
+          `${BRIDGE_URI}/json.htm?type=command&param=switchlight&idx=${lightId}&switchcmd=${nextStatus}&level=0&passcode=`
         )
         return { name: 'toto' }
       } catch (err) {
