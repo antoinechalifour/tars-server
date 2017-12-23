@@ -12,14 +12,19 @@ module.exports = () => {
   return {
     lights: async () => {
       const response = await axios.get(
-        `${BRIDGE_URI}/json.htm?type=devices&filter=all&used=true&favorite=1&order=[Order]&plan=0`
+        `${BRIDGE_URI}/json.htm?type=devices&filter=light&used=true&order=[Order]&plan=0`
       )
       const data = response.data
 
-      return data.result.map(x => ({
+      const types = {
+        'Light/Switch': 'switch',
+        'Lighting 1': 'switch'
+      }
+
+      return data.result.filter(x => x.HardwareTypeVal === 21).map(x => ({
         id: x.idx,
         name: x.Name,
-        type: x.Type,
+        type: types[x.Type],
         status: x.Status === 'On' ? 'on' : 'off'
       }))
     },
