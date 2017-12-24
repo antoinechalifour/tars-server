@@ -10,7 +10,7 @@ module.exports = container => {
   return {
     typeDefs: require('./typeDefs'),
     resolvers: {
-      Query: {
+      RootQuery: {
         feed: options => {
           return rssService.feed(options)
         },
@@ -21,7 +21,7 @@ module.exports = container => {
           return weatherService.getCurrentWeather({ lon, lat })
         }
       },
-      Mutation: {
+      RootMutation: {
         toggleLight (_, { lightId, isOn }) {
           return lightsService.toggleLight(lightId, isOn)
         }
