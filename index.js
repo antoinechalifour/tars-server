@@ -17,11 +17,13 @@ container.register({
 
   // Repositories (Abstraction over persistance layer)
   rssRepository: asFunction(require('./src/repositories/Rss')),
+  listsRepository: asFunction(require('./src/repositories/Lists')),
 
   // Services (business layer)
   rssService: asFunction(require('./src/services/Rss')),
   lightsService: asFunction(require('./src/services/LightsDomoticz')),
-  weatherService: asFunction(require('./src/services/WeatherService'))
+  weatherService: asFunction(require('./src/services/WeatherService')),
+  listsService: asFunction(require('./src/services/ListsService'))
 })
 
 // App configuration
