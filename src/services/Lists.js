@@ -19,11 +19,13 @@ module.exports = ({ listsRepository }) => ({
   },
 
   async create (name) {
+    // TODO: Validate list name (Joi ?)
     const [id] = await listsRepository.create({ name })
     return this.list(id)
   },
 
   async update (id, updates) {
+    // TODO: Validate updates (Joi ?)
     await listsRepository.update(id, updates)
     return this.list(id)
   },
@@ -34,11 +36,13 @@ module.exports = ({ listsRepository }) => ({
   },
 
   async addItem (listId, text) {
+    // TODO: Validate items (Joi ?)
     await listsRepository.addItem(listId, { text, done: false })
     return this.list(listId)
   },
 
   async updateItem (id, updates) {
+    // TODO: Validate updates (Joi ?)
     await listsRepository.updateItem(id, updates)
     const { list_id: listId } = await listsRepository.item(id)
     return this.list(listId)

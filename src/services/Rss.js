@@ -8,6 +8,7 @@ module.exports = ({ rssRepository }) => {
   return {
     feed: async () => {
       const sources = await rssRepository.findSources()
+      // TODO: Handle dependencies failures
       const channels = await Promise.all(
         sources.map(({ source }) => fetchRss(source))
       )
