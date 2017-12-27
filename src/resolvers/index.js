@@ -31,7 +31,9 @@ module.exports = container => {
           listsService.addItem(listId, text),
         updateListItem: (_, { id, text, done }) =>
           listsService.updateItem(id, { text, done }),
-        deleteListItem: (_, { id }) => listsService.deleteItem(id)
+        deleteListItem: (_, { id }) => listsService.deleteItem(id),
+        addSource: (_, { url }) => rssService.addSource(url),
+        deleteSource: (_, { id }) => rssService.deleteSource(id)
       }
     }
   }

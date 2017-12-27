@@ -3,5 +3,7 @@ module.exports = `
     ${require('./lights')}
 
     ${require('./lists')}
+
+    ${require('./rss')}
   }
 `

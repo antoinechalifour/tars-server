@@ -3,6 +3,7 @@ module.exports = `
     title: String,
     link: String,
     date: String,
+    sourceId: Int,
     source: String
   }
 `

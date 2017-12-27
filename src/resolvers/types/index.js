@@ -11,5 +11,6 @@ module.exports = [
   require('./Feed'),
   require('./Light'),
   require('./Weather'),
+  require('./Source'),
   ...require('./Lists')
 ]
