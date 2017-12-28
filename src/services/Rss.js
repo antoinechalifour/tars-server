@@ -7,7 +7,20 @@ const fetchRss = promisify(parser.parseURL)
 module.exports = ({ rssRepository }) => {
   return {
     async addSource (url) {
-      // TODO: Validate url
+      try {
+        // 1. Validate the source url by making a request
+        // If the RSS parser is not able to parse the response,
+        // the we do not accept this source.
+        await fetchRss(url)
+      } catch (e) {
+        const err = new Error(`Invalid RSS source: "${url}"`)
+        err.code = 'HC_RSS-SOURCE_INVALID'
+        err.originalError = e
+
+        throw err
+      }
+
+      // 2. Add the RSS source
       const fields = { source: url }
       const [id] = await rssRepository.create(fields)
 
