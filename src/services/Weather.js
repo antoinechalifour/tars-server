@@ -47,7 +47,6 @@ module.exports = function WeatherService () {
      * @returns {Promise<Weather>} - The current weather.
      */
     async getCurrentWeather ({ lon, lat }) {
-      let data
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=${UNIT}`
       )
