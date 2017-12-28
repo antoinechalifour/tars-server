@@ -21,7 +21,16 @@ module.exports = function DomoticzLightsService () {
     toggleLight: async (lightId, isOn) =>
       format.light(await domoticz.turn(lightId, isOn)),
 
-    updateLight: async (lightId, { bri }) =>
-      format.light(await domoticz.brightness(lightId, bri))
+    updateLight: async (lightId, { bri, name }) => {
+      if (bri) {
+        await domoticz.brightness(lightId, bri)
+      }
+
+      if (name) {
+        await domoticz.update(lightId, { name })
+      }
+
+      return format.light(await domoticz.light(lightId))
+    }
   }
 }

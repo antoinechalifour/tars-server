@@ -78,6 +78,33 @@ module.exports = function DomoticzApi ({ bridgeUri }) {
       })
 
       return this.light(lightId)
+    },
+
+    /**
+     * Updates a specific device by its id.
+     * @param {Stirng} lightId - The light id.
+     * @param {Object} updates - The updates to apply.
+     * @param {String} updates.name - The new device name.
+     */
+    async update (lightId, updates) {
+      const options = {
+        type: 'setused',
+        idx: lightId,
+        switchtype: 0, // TODO: Figure out what this is ??
+        used: true // TODO: Figure out what this is ??
+      }
+
+      if (updates.name) {
+        options.name = updates.name
+      }
+
+      if (updates.description) {
+        options.description = updates.description
+      }
+
+      await _request(options)
+
+      return this.light(lightId)
     }
   }
 }

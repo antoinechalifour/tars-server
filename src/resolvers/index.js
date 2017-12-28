@@ -24,8 +24,8 @@ module.exports = container => {
       RootMutation: {
         toggleLight: (_, { lightId, isOn }) =>
           lightsService.toggleLight(lightId, isOn),
-        updateLight: (_, { lightId, bri }) =>
-          lightsService.updateLight(lightId, { bri }),
+        updateLight: (_, { lightId, bri, name }) =>
+          lightsService.updateLight(lightId, { bri, name }),
         createList: (_, { name }) => listsService.create(name),
         updateList: (_, { id, name }) => listsService.update(id, { name }),
         deleteList: (_, { id }) => listsService.delete(id),
