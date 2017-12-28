@@ -1,11 +1,11 @@
 module.exports = [
   `
   type RootQuery {
-    feed: [Feed],
-    lights: [Light],
-    weather(lon: Float, lat: Float): Weather,
-    lists: [List],
-    list(id: Int): List
+    feed: [Feed]!,
+    lights: [Light]!,
+    weather(lon: Float, lat: Float): Weather!,
+    lists: [List]!,
+    list(id: Int): List!
   }
 `,
   require('./Feed'),

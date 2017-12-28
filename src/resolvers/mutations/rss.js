@@ -1,9 +1,9 @@
 module.exports = `
   addSource (
-    url: String
-  ) : Source
+    url: String!
+  ) : Source!
 
   deleteSource (
-    id: Int
-  ) : Source
+    id: Int!
+  ) : Source!
 `

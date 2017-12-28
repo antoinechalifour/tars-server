@@ -3,12 +3,12 @@
 
 module.exports = `
   toggleLight (
-    lightId: String,
-    isOn: Boolean
-  ) : Light
+    lightId: String!,
+    isOn: Boolean!
+  ) : Light!
 
   updateLight (
-    lightId: String,
-    bri: Int
-  ) : Light
+    lightId: String!,
+    bri: Int!
+  ) : Light!
 `
