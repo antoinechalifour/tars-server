@@ -1,11 +1,23 @@
 const { promisify } = require('util')
 const parser = require('rss-parser')
 const flatten = require('array-flatten')
-
 const fetchRss = promisify(parser.parseURL)
+
+/**
+ * @typedef Source A source
+ * @property {number} id - The source id.
+ * @property {String} url - The source URL.
+ */
 
 module.exports = ({ rssRepository }) => {
   return {
+    /**
+     * Adds a new source in the RSS repository.
+     *
+     * @param {String} url - The RSS Source URL.
+     *
+     * @returns {Source} The new source.
+     */
     async addSource (url) {
       try {
         // 1. Validate the source url by making a request
@@ -27,14 +39,34 @@ module.exports = ({ rssRepository }) => {
       return this.source(id)
     },
 
+    /**
+     * Deletes a source from the rss repository.
+     *
+     * @param {Number} id - The id of the source to delete.
+     */
     async deleteSource (id) {
       await rssRepository.delete(id)
 
       return { id }
     },
 
+    /**
+     * Fetches a source by id in the RSS repository.
+     *
+     * @param {Number} id - The id of the source to fetch.
+     *
+     * @returns {Source} The source.
+     */
     async source (id) {
       const source = await rssRepository.source(id)
+
+      if (!source) {
+        const err = new Error(`Source "${id}" was not found`)
+        err.code = 'HC_RSS-SOURCE_NOT_FOUND'
+
+        throw err
+      }
+
       const result = { ...source }
 
       result.url = result.source
