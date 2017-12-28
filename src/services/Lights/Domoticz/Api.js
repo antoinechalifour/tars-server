@@ -90,7 +90,6 @@ module.exports = function DomoticzApi ({ bridgeUri }) {
       const options = {
         type: 'setused',
         idx: lightId,
-        switchtype: 0, // TODO: Figure out what this is ??
         used: true // TODO: Figure out what this is ??
       }
 
