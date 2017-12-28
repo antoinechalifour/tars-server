@@ -9,6 +9,15 @@ const fetchRss = promisify(parser.parseURL)
  * @property {String} url - The source URL.
  */
 
+/**
+ * @typedef FeedItem The user feed.
+ * @property {String} title - The item title.
+ * @property {String} link - The item link.
+ * @property {String} date - The item publication date.
+ * @property {Number} sourceId - The id of the source.
+ * @property {String} source - The source title.
+ */
+
 module.exports = ({ rssRepository }) => {
   return {
     /**
@@ -75,17 +84,31 @@ module.exports = ({ rssRepository }) => {
       return result
     },
 
+    /**
+     * Aggregates all the RSS sources into a single feed.
+     *
+     * @returns {FeedItem[]} - The user feed.
+     */
     async feed () {
       const sources = await rssRepository.findSources()
-      // TODO: Handle dependencies failures
       const channels = await Promise.all(
         sources.map(async ({ id, source }) => {
-          const result = await fetchRss(source)
+          try {
+            const result = await fetchRss(source)
 
-          return { sourceId: id, ...result }
+            return { sourceId: id, ...result }
+          } catch (err) {
+            // The current RSS source failed.
+            return null
+          }
         })
       )
 
+      // Remove invalid RSS channels that returned null
+      const validChannels = channels.map(x => x !== null)
+
+      // Flatten all channels into a single list of
+      // items.
       const feed = flatten(
         channels.map(({ sourceId, feed }) => {
           const channelTitle = feed.title
