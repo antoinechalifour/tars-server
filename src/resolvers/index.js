@@ -1,5 +1,7 @@
 /**
  * Module that builds the GraphQL configuration.
+ * It simply maps GraphQL queries to services.
+ *
  * @param {Object} container The DI container.
  */
 module.exports = container => {

@@ -4,7 +4,7 @@ const axios = require('axios')
 const Api = require('./Api')
 const format = require('./format')
 
-module.exports = () => {
+module.exports = function DomoticzLightsService () {
   const BRIDGE_URI = process.env.DOMOTICZ_URI
   assert(
     BRIDGE_URI,

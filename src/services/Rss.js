@@ -18,7 +18,11 @@ const fetchRss = promisify(parser.parseURL)
  * @property {String} source - The source title.
  */
 
-module.exports = ({ rssRepository }) => {
+/**
+  * Factory function that creates a RSS service.
+  * @param {Object} dependencies - The module dependencies.
+  */
+module.exports = function RssService ({ rssRepository }) {
   return {
     /**
      * Adds a new source in the RSS repository.
@@ -90,7 +94,7 @@ module.exports = ({ rssRepository }) => {
      * @returns {FeedItem[]} - The user feed.
      */
     async feed () {
-      const sources = await rssRepository.findSources()
+      const sources = await rssRepository.sources()
       const channels = await Promise.all(
         sources.map(async ({ id, source }) => {
           try {
