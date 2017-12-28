@@ -1,9 +1,12 @@
+const path = require('path')
+const requireGql = require('../requireGql')
+
 module.exports = `
   type RootMutation {
-    ${require('./lights')}
+    ${requireGql(path.join(__dirname, './lights.graphql'))}
 
-    ${require('./lists')}
+    ${requireGql(path.join(__dirname, './lists.graphql'))}
 
-    ${require('./rss')}
+    ${requireGql(path.join(__dirname, './rss.graphql'))}
   }
 `

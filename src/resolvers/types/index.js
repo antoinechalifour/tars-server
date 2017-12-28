@@ -1,3 +1,6 @@
+const path = require('path')
+const requireGql = require('../requireGql')
+
 module.exports = [
   `
   type RootQuery {
@@ -8,9 +11,9 @@ module.exports = [
     list(id: Int): List!
   }
 `,
-  require('./Feed'),
-  require('./Light'),
-  require('./Weather'),
-  require('./Source'),
-  ...require('./Lists')
+  requireGql(path.join(__dirname, './Feed.graphql')),
+  requireGql(path.join(__dirname, './Light.graphql')),
+  requireGql(path.join(__dirname, './Weather.graphql')),
+  requireGql(path.join(__dirname, './Source.graphql')),
+  requireGql(path.join(__dirname, './Lists.graphql'))
 ]

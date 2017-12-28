@@ -1,0 +1,9 @@
+toggleLight (
+  lightId: String!,
+  isOn: Boolean!
+) : Light!
+
+updateLight (
+  lightId: String!,
+  bri: Int!
+) : Light!
