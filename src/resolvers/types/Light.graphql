@@ -5,3 +5,30 @@ type Light {
   status: String,
   bri: Int
 }
+
+input SwitchLightInput {
+  id: String!,
+  isOn: Boolean!
+}
+
+type SwitchLightResponse {
+  light: Light
+}
+
+input SetLightBrightnessInput {
+  id: String!,
+  bri: Int!
+}
+
+type SetLightBrightnessResponse {
+  light: Light
+}
+
+input UpdateLightInput {
+  id: String!,
+  name: String
+}
+
+type UpdateLightResponse {
+  light: Light
+}

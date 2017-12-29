@@ -1,27 +1,11 @@
-createList (
-  name: String!
-) : List!
+createList (input: CreateListInput!) : CreateListResponse!
 
-updateList (
-  id: Int!,
-  name: String!
-) : List!
+updateList (input: UpdateListInput!) : UpdateListResponse!
 
-deleteList (
-  id: Int!
-) : List!
+deleteList (input: DeleteListInput!) : DeleteListResponse!
 
-addListItem (
-  listId: Int!,
-  text: String!
-) : List!
+addListItem (input: AddListItemInput!) : AddListItemResponse!
 
-updateListItem (
-  id: Int!,
-  text: String!,
-  done: Boolean!
-) : List!
+updateListItem (input: UpdateListItemInput!) : UpdateListItemResponse!
 
-deleteListItem (
-  id: Int!
-) : List!
+deleteListItem (input: DeleteListItemInput!) : DeleteListItemResponse!

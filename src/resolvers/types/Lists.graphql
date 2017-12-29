@@ -1,3 +1,4 @@
+# Application Types
 type List {
   id: Int!,
   name: String!,
@@ -8,4 +9,59 @@ type ListItem {
   id: Int!,
   text: String!,
   done: Boolean!
+}
+
+# Mutation types
+
+input CreateListInput {
+  name: String!
+}
+
+type CreateListResponse {
+  list: List
+}
+
+input UpdateListInput {
+  id: Int!,
+  name: String!
+}
+
+type UpdateListResponse {
+  list: List
+}
+
+input DeleteListInput {
+  id: Int!
+}
+
+type DeleteListResponse {
+  list: List
+}
+
+input AddListItemInput {
+  listId: Int!,
+  text: String!
+}
+
+type AddListItemResponse {
+  list: List,
+  item: ListItem
+}
+
+input UpdateListItemInput {
+  id: Int!,
+  text: String,
+  done: Boolean
+}
+
+type UpdateListItemResponse {
+  item: ListItem
+}
+
+input DeleteListItemInput {
+  id: Int!
+}
+
+type DeleteListItemResponse {
+  item: ListItem
 }

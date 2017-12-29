@@ -1,10 +1,5 @@
-toggleLight (
-  lightId: String!,
-  isOn: Boolean!
-) : Light!
+switchLight (input: SwitchLightInput!) : SwitchLightResponse!
 
-updateLight (
-  lightId: String!,
-  bri: Int,
-  name: String
-) : Light!
+setLightBrightness (input: SetLightBrightnessInput!) : SetLightBrightnessResponse!
+
+updateLightInformation (input: UpdateLightInput!) : UpdateLightResponse!

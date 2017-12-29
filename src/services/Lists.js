@@ -33,6 +33,14 @@ module.exports = function ListsService ({ listsRepository }) {
     },
 
     /**
+     * Fetch a single item.
+     * @param {Number} id - The item id.
+     */
+    item (id) {
+      return listsRepository.item(id)
+    },
+
+    /**
      * Creates a list.
      * @param {String} name - The new list name.
      */
@@ -62,6 +70,7 @@ module.exports = function ListsService ({ listsRepository }) {
      */
     async delete (id) {
       await listsRepository.delete(id)
+
       return { id }
     },
 
@@ -74,8 +83,9 @@ module.exports = function ListsService ({ listsRepository }) {
      */
     async addItem (listId, text) {
       // TODO: Validate items (Joi ?)
-      await listsRepository.addItem(listId, { text, done: false })
-      return this.list(listId)
+      const [id] = await listsRepository.addItem(listId, { text, done: false })
+
+      return this.item(id)
     },
 
     /**
@@ -88,9 +98,8 @@ module.exports = function ListsService ({ listsRepository }) {
     async updateItem (id, updates) {
       // TODO: Validate updates (Joi ?)
       await listsRepository.updateItem(id, updates)
-      const { list_id: listId } = await listsRepository.item(id)
 
-      return this.list(listId)
+      return this.item(id)
     },
 
     /**

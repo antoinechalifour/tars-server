@@ -1,4 +1,0 @@
-type Source {
-  id: Int!,
-  url: String!
-}

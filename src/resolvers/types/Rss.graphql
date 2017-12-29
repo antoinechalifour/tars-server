@@ -1,0 +1,20 @@
+type Source {
+  id: Int!,
+  url: String!
+}
+
+input AddRssSourceInput {
+  url: String!
+}
+
+type AddRssSourceResponse {
+  source: Source
+}
+
+input DeleteRssSourceInput {
+  id: Int!
+}
+
+type DeleteRssSourceResponse {
+  source: Source
+}

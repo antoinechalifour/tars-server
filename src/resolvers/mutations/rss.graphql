@@ -1,7 +1,3 @@
-addSource (
-  url: String!
-) : Source!
+addRssSource (input: AddRssSourceInput!) : AddRssSourceResponse!
 
-deleteSource (
-  id: Int!
-) : Source!
+deleteRssSource (input: DeleteRssSourceInput!) : DeleteRssSourceResponse!
