@@ -8,6 +8,7 @@ module.exports = [
     lights: [Light]!,
     weather(lon: Float, lat: Float): Weather!,
     lists: [List]!,
+    sources: [Source]!,
     list(id: Int): List!
   }
 `,

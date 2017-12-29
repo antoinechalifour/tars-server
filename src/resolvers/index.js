@@ -19,7 +19,8 @@ module.exports = container => {
         weather: (_, { lon, lat }) =>
           weatherService.getCurrentWeather({ lon, lat }),
         lists: () => listsService.lists(),
-        list: (_, { id }) => listsService.list(id)
+        list: (_, { id }) => listsService.list(id),
+        sources: () => rssService.sources()
       },
       RootMutation: {
         toggleLight: (_, { lightId, isOn }) =>

@@ -2,6 +2,14 @@ const { promisify } = require('util')
 const parser = require('rss-parser')
 const flatten = require('array-flatten')
 const fetchRss = promisify(parser.parseURL)
+const formatSource = source => {
+  const result = { ...source }
+
+  result.url = result.source
+  delete result.source
+
+  return result
+}
 
 /**
  * @typedef Source A source
@@ -64,6 +72,17 @@ module.exports = function RssService ({ rssRepository }) {
     },
 
     /**
+     * Fetches all sources from the RSS repository.
+     *
+     * @returns {Source[]} The sources.
+     */
+    async sources () {
+      const sources = await rssRepository.sources()
+
+      return sources.map(formatSource)
+    },
+
+    /**
      * Fetches a source by id in the RSS repository.
      *
      * @param {Number} id - The id of the source to fetch.
@@ -80,12 +99,7 @@ module.exports = function RssService ({ rssRepository }) {
         throw err
       }
 
-      const result = { ...source }
-
-      result.url = result.source
-      delete result.source
-
-      return result
+      return formatSource(source)
     },
 
     /**
