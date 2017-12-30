@@ -131,12 +131,13 @@ module.exports = function RssService ({ rssRepository }) {
         channels.map(({ sourceId, feed }) => {
           const channelTitle = feed.title
 
-          return feed.entries.map(({ title, link, pubDate }) => ({
+          return feed.entries.map(({ title, link, pubDate, content }) => ({
             title,
             link,
             date: pubDate,
             sourceId,
-            source: channelTitle
+            source: channelTitle,
+            content
           }))
         })
       )

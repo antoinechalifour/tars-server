@@ -1,0 +1,1 @@
+weatherChanged (lon: Float!, lat: Float!) : Weather!
