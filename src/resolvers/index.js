@@ -1,3 +1,5 @@
+const { withFilter } = require('graphql-subscriptions')
+
 /**
  * Module that builds the GraphQL configuration.
  * It simply maps GraphQL queries to services.
@@ -25,6 +27,9 @@ module.exports = container => {
         sources: () => rssService.sources()
       },
       RootMutation: {
+        /*************************************************************
+         *                       LIGHTS API
+         *************************************************************/
         switchLight: async (_, { input }) => {
           const light = await lightsService.toggleLight(input.id, input.isOn)
 
@@ -44,10 +49,14 @@ module.exports = container => {
 
           return { light }
         },
+
+        /*************************************************************
+         *                        LISTS API
+         *************************************************************/
         createList: async (_, { input }) => {
           const list = await listsService.create(input.name)
 
-          pubSub.publish('listCreated', list.id)
+          pubSub.publish('listCreated', { listId: list.id })
 
           return { list }
         },
@@ -56,17 +65,26 @@ module.exports = container => {
             name: input.name
           })
 
+          pubSub.publish('listUpdated', { listId: list.id })
+
           return { list }
         },
         deleteList: async (_, { input }) => {
           const list = await listsService.list(input.id)
           await listsService.delete(input.id)
 
+          pubSub.publish('listDeleted', { listId: list.id })
+
           return { list }
         },
         addListItem: async (_, { input }) => {
           const item = await listsService.addItem(input.listId, input.text)
           const list = await listsService.list(input.listId)
+
+          pubSub.publish('listItemCreated', {
+            listId: list.id,
+            itemId: item.id
+          })
 
           return { list, item }
         },
@@ -76,14 +94,28 @@ module.exports = container => {
             done: input.done
           })
 
+          pubSub.publish('listItemUpdated', {
+            listId: item.listId,
+            itemId: item.id
+          })
+
           return { item }
         },
         deleteListItem: async (_, { input }) => {
           const item = await listsService.item(input.id)
           await listsService.deleteItem(input.id)
 
+          pubSub.publish('listItemDeleted', {
+            listId: item.listId,
+            itemId: input.id
+          })
+
           return { item }
         },
+
+        /*************************************************************
+         *                        RSS API
+         *************************************************************/
         addRssSource: async (_, { input }) => {
           const source = await rssService.addSource(input.url)
 
@@ -99,7 +131,44 @@ module.exports = container => {
       RootSubscription: {
         listCreated: {
           subscribe: () => pubSub.asyncIterator('listCreated'),
-          resolve: id => listsService.list(id)
+          resolve: ({ listId }) => listsService.list(listId)
+        },
+
+        listDeleted: {
+          subscribe: () => pubSub.asyncIterator('listDeleted'),
+          resolve: ({ listId }) => ({ listId })
+        },
+
+        listUpdated: {
+          subscribe: withFilter(
+            () => pubSub.asyncIterator('listUpdated'),
+            ({ listId }, variables) => listId === variables.id
+          ),
+          resolve: ({ listId }) => listsService.list(listId)
+        },
+
+        listItemCreated: {
+          subscribe: withFilter(
+            () => pubSub.asyncIterator('listItemCreated'),
+            ({ listId, itemId }, variables) => listId === variables.listId
+          ),
+          resolve: ({ itemId }) => listsService.item(itemId)
+        },
+
+        listItemUpdated: {
+          subscribe: withFilter(
+            () => pubSub.asyncIterator('listItemUpdated'),
+            ({ listId, itemId }, variables) => listId === variables.listId
+          ),
+          resolve: ({ itemId }) => listsService.item(itemId)
+        },
+
+        listItemDeleted: {
+          subscribe: withFilter(
+            () => pubSub.asyncIterator('listItemDeleted'),
+            ({ listId, itemId }, variables) => listId === variables.listId
+          ),
+          resolve: ({ itemId }) => ({ id: itemId })
         }
       }
     }

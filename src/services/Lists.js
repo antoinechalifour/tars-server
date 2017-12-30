@@ -14,7 +14,10 @@ module.exports = function ListsService ({ listsRepository }) {
       // 2. Concurrently add each list's items.
       await Promise.all(
         lists.map(async list => {
-          list.items = await listsRepository.items(list.id)
+          list.items = (await listsRepository.items(list.id)).map(x => ({
+            ...x,
+            listId: list.id
+          }))
         })
       )
 
@@ -27,7 +30,10 @@ module.exports = function ListsService ({ listsRepository }) {
      */
     async list (id) {
       const list = await listsRepository.list(id)
-      list.items = await listsRepository.items(id)
+      list.items = (await listsRepository.items(id)).map(x => ({
+        ...x,
+        listId: id
+      }))
 
       return list
     },
@@ -36,8 +42,12 @@ module.exports = function ListsService ({ listsRepository }) {
      * Fetch a single item.
      * @param {Number} id - The item id.
      */
-    item (id) {
-      return listsRepository.item(id)
+    async item (id) {
+      const item = await listsRepository.item(id)
+      return {
+        ...item,
+        listId: item.list_id
+      }
     },
 
     /**

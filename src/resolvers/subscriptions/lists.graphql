@@ -1,1 +1,11 @@
 listCreated : List!
+
+listDeleted : List!
+
+listUpdated (id: Int!) : List!
+
+listItemCreated (listId: Int!) : ListItem!
+
+listItemUpdated (listId: Int!) : ListItem!
+
+listItemDeleted (listId: Int!) : ListItem!
