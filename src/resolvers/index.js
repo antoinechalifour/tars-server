@@ -136,7 +136,7 @@ module.exports = container => {
 
         listDeleted: {
           subscribe: () => pubSub.asyncIterator('listDeleted'),
-          resolve: ({ listId }) => ({ listId })
+          resolve: ({ listId }) => ({ id: listId })
         },
 
         listUpdated: {
