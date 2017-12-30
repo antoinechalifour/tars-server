@@ -9,6 +9,7 @@ module.exports = container => {
   const lightsService = container.resolve('lightsService')
   const weatherService = container.resolve('weatherService')
   const listsService = container.resolve('listsService')
+  const pubSub = container.resolve('pubSub')
 
   return {
     typeDefs: require('./typeDefs'),
@@ -45,6 +46,8 @@ module.exports = container => {
         },
         createList: async (_, { input }) => {
           const list = await listsService.create(input.name)
+
+          pubSub.publish('listCreated', list.id)
 
           return { list }
         },
@@ -91,6 +94,12 @@ module.exports = container => {
           await rssService.deleteSource(input.id)
 
           return { source }
+        }
+      },
+      RootSubscription: {
+        listCreated: {
+          subscribe: () => pubSub.asyncIterator('listCreated'),
+          resolve: id => listsService.list(id)
         }
       }
     }

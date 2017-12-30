@@ -8,12 +8,17 @@ const knex = Knex(dbConfig)
 
 knex.migrate.latest(dbConfig)
 
+// Real time stuff
+const { PubSub } = require('graphql-subscriptions')
+const pubSub = new PubSub()
+
 // Dependency injection configuration
 const { createContainer, asFunction, asValue } = require('awilix')
 const container = createContainer()
 container.register({
   // Values
   knex: asValue(knex),
+  pubSub: asValue(pubSub),
 
   // Repositories (Abstraction over persistance layer)
   rssRepository: asFunction(require('./src/repositories/Rss')),
@@ -27,7 +32,20 @@ container.register({
 })
 
 // App configuration
+const serverOptions = {
+  host: '0.0.0.0',
+  port,
+  subscriptionsPath: process.env.SUBSCRIPTIONS_PATH
+}
 const App = require('./src/App')
-const app = App({ container })
+const { app, runSubscriptionServer } = App({
+  container,
+  options: serverOptions
+})
 
-app.listen(port, () => console.log(`App running @ http://0.0.0.0:${port}`))
+const server = app.listen(port, () =>
+  console.log(
+    `App running @ http://${serverOptions.host}:${serverOptions.port}`
+  )
+)
+runSubscriptionServer(server)

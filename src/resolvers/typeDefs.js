@@ -1,8 +1,14 @@
 const schema = `
 schema {
   query: RootQuery,
-  mutation: RootMutation
+  mutation: RootMutation,
+  subscription: RootSubscription
 }
 `
 
-module.exports = [schema, ...require('./types'), require('./mutations')]
+module.exports = [
+  schema,
+  ...require('./types'),
+  require('./mutations'),
+  require('./subscriptions')
+]
