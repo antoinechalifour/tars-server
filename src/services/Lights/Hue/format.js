@@ -25,7 +25,7 @@ module.exports.light = function formatLight (light) {
   if (type === 'dimmable light') {
     additionalFields.type = 'dimmer'
     additionalFields.status = light.state.on ? 'on' : 'off'
-    additionalFields.bri = light.state.bri
+    additionalFields.bri = Math.round(light.state.bri / 255 * 100)
   }
 
   return Object.assign(baseFields, additionalFields)
