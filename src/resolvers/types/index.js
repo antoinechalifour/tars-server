@@ -14,6 +14,7 @@ module.exports = [
 
     # Weather / Temperature
     weather(lon: Float!, lat: Float!): Weather!,
+    weatherForecast(lon: Float!, lat: Float!): [Weather]!
 
     # Lists
     lists: [List]!,

@@ -22,6 +22,8 @@ module.exports = container => {
         lights: () => lightsService.lights(),
         weather: (_, { lon, lat }) =>
           weatherService.getCurrentWeather({ lon, lat }),
+        weatherForecast: (_, { lon, lat }) =>
+          weatherService.getForecast({ lon, lat }),
         lists: () => listsService.lists(),
         list: (_, { id }) => listsService.list(id),
         sources: () => rssService.sources()

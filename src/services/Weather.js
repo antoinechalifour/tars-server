@@ -63,6 +63,28 @@ module.exports = function WeatherService () {
         temp_max: data.main.temp_max,
         wind_speed: data.wind.speed
       }
+    },
+
+    async getForecast ({ lon, lat }) {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=${UNIT}`
+      )
+
+      const data = response.data
+      const city = data.city.name
+
+      return data.list.map(x => {
+        return {
+          city,
+          date: new Date(x.dt * 1000),
+          kind: x.weather[0].main.toLowerCase(),
+          temp: x.main.temp,
+          pressure: x.main.pressure,
+          temp_min: x.main.temp_min,
+          temp_max: x.main.temp_max,
+          wind_speed: x.wind.speed
+        }
+      })
     }
   }
 }
