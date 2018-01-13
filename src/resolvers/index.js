@@ -12,6 +12,10 @@ module.exports = container => {
   const weatherService = container.resolve('weatherService')
   const listsService = container.resolve('listsService')
   const pubSub = container.resolve('pubSub')
+  const serverPosition = {
+    lon: process.env.WEATHER_LON,
+    lat: process.env.WEATHER_LAT
+  }
 
   return {
     typeDefs: require('./typeDefs'),
@@ -20,10 +24,14 @@ module.exports = container => {
         feed: () => rssService.feed(),
         light: (_, { id }) => lightsService.light(id),
         lights: () => lightsService.lights(),
-        weather: (_, { lon, lat }) =>
-          weatherService.getCurrentWeather({ lon, lat }),
-        weatherForecast: (_, { lon, lat }) =>
-          weatherService.getForecast({ lon, lat }),
+        weather: (_, { lon, lat }) => {
+          const position = lon ? { lon, lat } : serverPosition
+          return weatherService.getCurrentWeather(position)
+        },
+        weatherForecast: (_, { lon, lat }) => {
+          const position = lon ? { lon, lat } : serverPosition
+          return weatherService.getForecast(position)
+        },
         lists: () => listsService.lists(),
         list: (_, { id }) => listsService.list(id),
         sources: () => rssService.sources()

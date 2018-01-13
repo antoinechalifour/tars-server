@@ -13,8 +13,8 @@ module.exports = [
     light(id: String!): Light!,
 
     # Weather / Temperature
-    weather(lon: Float!, lat: Float!): Weather!,
-    weatherForecast(lon: Float!, lat: Float!): [Weather]!
+    weather(lon: Float, lat: Float): Weather!,
+    weatherForecast(lon: Float, lat: Float): [Weather]!
 
     # Lists
     lists: [List]!,
