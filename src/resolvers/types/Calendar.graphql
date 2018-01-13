@@ -1,0 +1,18 @@
+type Calendar {
+  events: [CalendarEvent]!
+}
+
+type CalendarEvent {
+  id: String!,
+  title: String!,
+  start: String!,
+  end: String!,
+  link: String,
+  organizer: CalendarEventUser!,
+  attendees: [CalendarEventUser]!
+}
+
+type CalendarEventUser {
+  name: String!,
+  email: String
+}

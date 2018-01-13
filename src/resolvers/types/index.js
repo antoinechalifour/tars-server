@@ -19,11 +19,15 @@ module.exports = [
     # Lists
     lists: [List]!,
     list(id: Int): List!
+
+    # Calendar
+    calendar: Calendar!
   }
 `,
   requireGql(path.join(__dirname, './Feed.graphql')),
   requireGql(path.join(__dirname, './Light.graphql')),
   requireGql(path.join(__dirname, './Weather.graphql')),
   requireGql(path.join(__dirname, './Rss.graphql')),
-  requireGql(path.join(__dirname, './Lists.graphql'))
+  requireGql(path.join(__dirname, './Lists.graphql')),
+  requireGql(path.join(__dirname, './Calendar.graphql'))
 ]
