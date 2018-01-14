@@ -57,3 +57,6 @@ const server = app.listen(port, () =>
   logger.info(`Running @ http://${serverOptions.host}:${serverOptions.port}`)
 )
 runSubscriptionServer(server)
+
+// Run user scripts
+require('./scripts')(container)

@@ -4,5 +4,7 @@ const requireGql = require('../requireGql')
 module.exports = `
   type RootSubscription {
     ${requireGql(path.join(__dirname, './lists.graphql'))}
+
+    ${requireGql(path.join(__dirname, './lights.graphql'))}
   }
 `

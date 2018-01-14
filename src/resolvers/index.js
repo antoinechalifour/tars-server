@@ -143,6 +143,11 @@ module.exports = container => {
         }
       },
       RootSubscription: {
+        lightUpdated: {
+          subscribe: () => pubSub.asyncIterator('lightUpdated'),
+          resolve: light => light
+        },
+
         listCreated: {
           subscribe: () => pubSub.asyncIterator('listCreated'),
           resolve: ({ listId }) => listsService.list(listId)
