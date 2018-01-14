@@ -3,7 +3,9 @@ const { promisify } = require('util')
 const google = require('googleapis')
 const format = require('./format')
 
-module.exports = function GoogleCalendarService () {
+module.exports = function GoogleCalendarService ({ logging }) {
+  const logger = logging.getLogger('services.calendar.google')
+  logger.info('Creating service.')
   const CREDENTIALS_FILE = process.env.GOOGLE_CALENDAR_CREDENTIALS
   const TOKEN = process.env.GOOGLE_CALENDAR_TOKEN
 
@@ -28,11 +30,15 @@ module.exports = function GoogleCalendarService () {
   }
 
   const authReady = new Promise((resolve, reject) => {
+    logger.debug('Trying to fetch credentials using environment token', {
+      refresh_token: TOKEN
+    })
     oauth2Client.refreshAccessToken(err => {
       if (err) {
-        console.log(err)
+        logger.error(err.message, err)
         reject(err)
       } else {
+        logger.debug('Access token has been set.')
         resolve()
       }
     })
@@ -50,6 +56,7 @@ module.exports = function GoogleCalendarService () {
 
   return {
     events: whenReady(async function events () {
+      logger.debug('Calling Google API')
       const calendarApi = google.calendar('v3')
       const events = await promisify(calendarApi.events.list)({
         calendarId: 'primary',
@@ -57,6 +64,7 @@ module.exports = function GoogleCalendarService () {
         singleEvents: true,
         orderBy: 'startTime'
       })
+      logger.debug('Done.')
 
       return {
         events: events.items.map(format.event)

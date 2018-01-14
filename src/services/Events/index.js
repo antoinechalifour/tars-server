@@ -1,6 +1,9 @@
 const format = require('./format')
 
-module.exports = function EventsService ({ eventsRepository }) {
+module.exports = function EventsService ({ logging, eventsRepository }) {
+  const logger = logging.getLogger('services.events')
+  logger.info('Creating service.')
+
   return {
     async record (type, date, payload) {
       const fields = {

@@ -30,7 +30,10 @@ const formatSource = source => {
   * Factory function that creates a RSS service.
   * @param {Object} dependencies - The module dependencies.
   */
-module.exports = function RssService ({ rssRepository }) {
+module.exports = function RssService ({ logging, rssRepository }) {
+  const logger = logging.getLogger('services.rss')
+  logger.info('Creating service.')
+
   return {
     /**
      * Adds a new source in the RSS repository.
@@ -108,6 +111,7 @@ module.exports = function RssService ({ rssRepository }) {
      * @returns {FeedItem[]} - The user feed.
      */
     async feed () {
+      logger.debug('Generating user feed.')
       const sources = await rssRepository.sources()
       const channels = await Promise.all(
         sources.map(async ({ id, source }) => {
@@ -116,6 +120,11 @@ module.exports = function RssService ({ rssRepository }) {
 
             return { sourceId: id, ...result }
           } catch (err) {
+            logger.error(
+              `Invalid RSS response from ${source}: ${err.message}`,
+              err,
+              { id, source }
+            )
             // The current RSS source failed.
             return null
           }

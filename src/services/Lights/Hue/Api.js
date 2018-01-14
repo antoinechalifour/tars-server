@@ -1,11 +1,18 @@
 const axios = require('axios')
 
-module.exports = function HueApi ({ bridges = [] }) {
+module.exports = function HueApi ({ logger, bridges = [] }) {
   const _callBridges = createRequest =>
     Promise.all(
-      bridges.map(({ uri, user }) =>
-        createRequest(path => `${uri}/api/${user}${path}`)
-      )
+      bridges.map(async ({ uri, user }) => {
+        const result = await createRequest(path => {
+          const fullPath = `${uri}/api/${user}${path}`
+          logger.debug('Calling Hue API: ', { uri: fullPath })
+          return fullPath
+        })
+        logger.debug('Done.')
+
+        return result
+      })
     )
 
   // FIXME: For multiple bridges ? (Cannot test it as of 4/1/2018)

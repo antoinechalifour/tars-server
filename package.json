@@ -11,6 +11,7 @@
     "array-flatten": "^2.1.1",
     "awilix": "^3.0.0",
     "axios": "^0.17.1",
+    "chalk": "^2.3.0",
     "dotenv": "^4.0.0",
     "google-auth-library": "^1.0.0",
     "googleapis": "^24.0.0",

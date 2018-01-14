@@ -1,4 +1,5 @@
 require('dotenv').config()
+const logging = require('./src/util/logging')({ level: process.env.LOG_LEVEL })
 const port = process.env.PORT
 
 // Database configuration
@@ -19,6 +20,7 @@ container.register({
   // Values
   knex: asValue(knex),
   pubSub: asValue(pubSub),
+  logging: asValue(logging),
 
   // Repositories (Abstraction over persistance layer)
   rssRepository: asFunction(require('./src/repositories/Rss')),
@@ -45,14 +47,13 @@ const serverOptions = {
   subscriptionsPath: process.env.SUBSCRIPTIONS_PATH
 }
 const App = require('./src/App')
+const logger = logging.getLogger('App')
 const { app, runSubscriptionServer } = App({
   container,
   options: serverOptions
 })
 
 const server = app.listen(port, () =>
-  console.log(
-    `App running @ http://${serverOptions.host}:${serverOptions.port}`
-  )
+  logger.info(`Running @ http://${serverOptions.host}:${serverOptions.port}`)
 )
 runSubscriptionServer(server)

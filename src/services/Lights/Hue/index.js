@@ -2,7 +2,9 @@ const assert = require('assert')
 const Api = require('./Api')
 const format = require('./format')
 
-module.exports = function HueLightsService ({ lightsEvents }) {
+module.exports = function HueLightsService ({ logging, lightsEvents }) {
+  const logger = logging.getLogger('services.lights.hue')
+  logger.info('Creating service.')
   const BRIDGE_URI = process.env.HUE_BRIDGE_URI
   const BRIDGE_USER = process.env.HUE_BRIDGE_USER
 
@@ -16,6 +18,7 @@ module.exports = function HueLightsService ({ lightsEvents }) {
   )
 
   const hue = Api({
+    logger: logging.getLogger('services.lights.hue.api'),
     bridges: [
       {
         uri: BRIDGE_URI,

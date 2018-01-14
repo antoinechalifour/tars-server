@@ -2,7 +2,14 @@
  * Factory function that creates a Lists service.
  * @param {Object} dependencies - The module dependencies.
  */
-module.exports = function ListsService ({ listsEvents, listsRepository }) {
+module.exports = function ListsService ({
+  logging,
+  listsEvents,
+  listsRepository
+}) {
+  const logger = logging.getLogger('services.lists')
+  logger.info('Creating service.')
+
   return {
     /**
      * Finds all lists with their nested items.

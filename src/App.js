@@ -5,6 +5,7 @@ const bodyParser = require('koa-bodyparser')
 const cors = require('@koa/cors')
 const { graphqlKoa, graphiqlKoa } = require('apollo-server-koa')
 const { makeExecutableSchema } = require('graphql-tools')
+const Logger = require('./middlewares/Logger')
 const Resolvers = require('./resolvers')
 const createSubscriptionServer = require('./SubscriptionServer')
 
@@ -18,6 +19,7 @@ module.exports = ({ container, options }) => {
   // GraphQL Setup
   const app = new Koa()
   const router = new Router()
+  const logger = Logger(container)
   const { typeDefs, resolvers } = Resolvers(container)
 
   const schema = makeExecutableSchema({
@@ -25,7 +27,7 @@ module.exports = ({ container, options }) => {
     resolvers
   })
 
-  app.use(cors()).use(bodyParser())
+  app.use(cors()).use(bodyParser()).use(logger)
 
   router
     .post('/graphql', graphqlKoa({ schema }))

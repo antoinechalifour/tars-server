@@ -1,5 +1,7 @@
 module.exports = function createEventsService (prefix, methods) {
-  return function ({ events }) {
+  return function ({ logging, events }) {
+    const logger = logging.getLogger(`services.events.${prefix}`)
+    logger.info('Creating service.')
     const service = {}
 
     methods.forEach(eventName => {

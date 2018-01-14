@@ -29,7 +29,10 @@ const axios = require('axios')
 /**
  * Factory function for the Weather service.
  */
-module.exports = function WeatherService () {
+module.exports = function WeatherService ({ logging }) {
+  const logger = logging.getLogger('services.weather')
+  logger.info('Creating service.')
+
   const API_KEY = process.env.OPEN_WEAHTER_MAP_API_KEY
   assert(
     API_KEY,
@@ -47,9 +50,11 @@ module.exports = function WeatherService () {
      * @returns {Promise<Weather>} - The current weather.
      */
     async getCurrentWeather ({ lon, lat }) {
+      logger.debug('Calling OpenWeatherMap weather API.')
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=${UNIT}`
       )
+      logger.debug('Done.')
 
       const data = response.data
       const weather = data.weather[0]
@@ -66,9 +71,11 @@ module.exports = function WeatherService () {
     },
 
     async getForecast ({ lon, lat }) {
+      logger.debug('Calling OpenWeatherMap forecast API.')
       const response = await axios.get(
         `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&APPID=${API_KEY}&units=${UNIT}`
       )
+      logger.debug('Done.')
 
       const data = response.data
       const city = data.city.name
