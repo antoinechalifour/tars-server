@@ -8,7 +8,7 @@ module.exports.event = googleEvent => ({
   title: googleEvent.summary,
   start: googleEvent.start.dateTime,
   end: googleEvent.end.dateTime,
-  link: googleEvent.link,
+  link: googleEvent.htmlLink,
   organizer: googleUserToUser(googleEvent.organizer),
   attendees: googleEvent.attendees
     ? googleEvent.attendees.map(googleUserToUser)
