@@ -22,6 +22,9 @@ module.exports = [
 
     # Calendar
     calendar: Calendar!
+
+    # Events / Logs
+    events: [Event]!
   }
 `,
   requireGql(path.join(__dirname, './Feed.graphql')),
@@ -29,5 +32,6 @@ module.exports = [
   requireGql(path.join(__dirname, './Weather.graphql')),
   requireGql(path.join(__dirname, './Rss.graphql')),
   requireGql(path.join(__dirname, './Lists.graphql')),
-  requireGql(path.join(__dirname, './Calendar.graphql'))
+  requireGql(path.join(__dirname, './Calendar.graphql')),
+  requireGql(path.join(__dirname, './Events.graphql'))
 ]

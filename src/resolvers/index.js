@@ -12,6 +12,7 @@ module.exports = container => {
   const weatherService = container.resolve('weatherService')
   const listsService = container.resolve('listsService')
   const calendarService = container.resolve('calendarService')
+  const events = container.resolve('events')
   const pubSub = container.resolve('pubSub')
   const serverPosition = {
     lon: process.env.WEATHER_LON,
@@ -36,7 +37,8 @@ module.exports = container => {
         lists: () => listsService.lists(),
         list: (_, { id }) => listsService.list(id),
         sources: () => rssService.sources(),
-        calendar: () => calendarService.events()
+        calendar: () => calendarService.events(),
+        events: () => events.all()
       },
       RootMutation: {
         /*************************************************************

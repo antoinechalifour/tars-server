@@ -1,0 +1,6 @@
+type Event {
+  id: String!,
+  type: String!,
+  date: String!,
+  payload: String!
+}
