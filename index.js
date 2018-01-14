@@ -27,6 +27,7 @@ container.register({
 
   // Events
   events: asFunction(require('./src/services/Events')),
+  listsEvents: asFunction(require('./src/services/Events/Lists')),
   lightsEvents: asFunction(require('./src/services/Events/Lights')),
 
   // Services (business layer)

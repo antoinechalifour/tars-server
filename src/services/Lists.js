@@ -2,7 +2,7 @@
  * Factory function that creates a Lists service.
  * @param {Object} dependencies - The module dependencies.
  */
-module.exports = function ListsService ({ listsRepository }) {
+module.exports = function ListsService ({ listsEvents, listsRepository }) {
   return {
     /**
      * Finds all lists with their nested items.
@@ -57,8 +57,11 @@ module.exports = function ListsService ({ listsRepository }) {
     async create (name) {
       // TODO: Validate list name (Joi ?)
       const [id] = await listsRepository.create({ name })
+      const list = await this.list(id)
 
-      return this.list(id)
+      listsEvents.created(list)
+
+      return list
     },
 
     /**
@@ -70,8 +73,11 @@ module.exports = function ListsService ({ listsRepository }) {
     async update (id, updates) {
       // TODO: Validate updates (Joi ?)
       await listsRepository.update(id, updates)
+      const list = await this.list(id)
 
-      return this.list(id)
+      listsEvents.updated(list)
+
+      return list
     },
 
     /**
@@ -79,7 +85,10 @@ module.exports = function ListsService ({ listsRepository }) {
      * @param {Number} id - The list id.
      */
     async delete (id) {
+      const list = await this.list(id)
       await listsRepository.delete(id)
+
+      listsEvents.deleted(list)
 
       return { id }
     },
@@ -94,8 +103,11 @@ module.exports = function ListsService ({ listsRepository }) {
     async addItem (listId, text) {
       // TODO: Validate items (Joi ?)
       const [id] = await listsRepository.addItem(listId, { text, done: false })
+      const item = await this.item(id)
 
-      return this.item(id)
+      listsEvents.item.created(item)
+
+      return item
     },
 
     /**
@@ -107,9 +119,19 @@ module.exports = function ListsService ({ listsRepository }) {
      */
     async updateItem (id, updates) {
       // TODO: Validate updates (Joi ?)
+      const oldItem = await this.item(id)
+
       await listsRepository.updateItem(id, updates)
 
-      return this.item(id)
+      const item = await this.item(id)
+
+      if (Boolean(oldItem.done) !== updates.done) {
+        listsEvents.item.status(item)
+      } else {
+        listsEvents.item.updated(item)
+      }
+
+      return item
     },
 
     /**
@@ -118,7 +140,10 @@ module.exports = function ListsService ({ listsRepository }) {
      */
     async deleteItem (id) {
       const { list_id: listId } = await listsRepository.item(id)
+      const item = await this.item(id)
       await listsRepository.deleteItem(id)
+
+      listsEvents.item.deleted(item)
 
       return this.list(listId)
     }
