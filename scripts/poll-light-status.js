@@ -1,13 +1,21 @@
+const assert = require('assert')
 const hash = require('object-hash')
 
 module.exports = function PollLightStatus (container) {
+  const POLL_INTERVAL = process.env.SCRIPTS_LIGHTS_POLL_INTERVAL
+
+  assert(
+    POLL_INTERVAL,
+    'Environment variable "SCRIPTS_LIGHTS_POLL_INTERVAL" is required for running script poll-light-status.js'
+  )
+
   const logging = container.resolve('logging')
   const pubSub = container.resolve('pubSub')
   const lightsService = container.resolve('lightsService')
   const cache = {}
 
   logger = logging.getLogger('scripts.poll-light-status')
-  logger.info('Running script.')
+  logger.info('Running script with configuration', { POLL_INTERVAL })
 
   const pollStatus = async () => {
     const lights = await lightsService.lights()
@@ -33,6 +41,6 @@ module.exports = function PollLightStatus (container) {
 
     // Start polling. After each step, compare the new hash
     // and publish an event if it has been changed
-    setInterval(pollStatus, 5000)
+    setInterval(pollStatus, POLL_INTERVAL)
   })()
 }
