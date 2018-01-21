@@ -12,6 +12,7 @@ module.exports = container => {
   const weatherService = container.resolve('weatherService')
   const listsService = container.resolve('listsService')
   const calendarService = container.resolve('calendarService')
+  const widgetsService = container.resolve('widgetsService')
   const events = container.resolve('events')
   const pubSub = container.resolve('pubSub')
   const serverPosition = {
@@ -38,7 +39,28 @@ module.exports = container => {
         list: (_, { id }) => listsService.list(id),
         sources: () => rssService.sources(),
         calendar: () => calendarService.events(),
-        events: () => events.all()
+        events: () => events.all(),
+        widgets: () => widgetsService.widgets()
+      },
+
+      Widget: {
+        __resolveType (data, ctx, info) {
+          switch (data.type) {
+            case 'weather':
+            case 'rss':
+            case 'lights':
+            case 'calendar':
+              return 'WidgetSimple'
+
+            case 'list':
+              return 'WidgetList'
+
+            default:
+              throw new Error(
+                `Undefined GraphQL type for widget: "${data.type}"`
+              )
+          }
+        }
       },
       RootMutation: {
         /*************************************************************

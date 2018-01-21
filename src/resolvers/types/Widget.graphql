@@ -1,0 +1,12 @@
+interface Widget {
+  type: String!
+}
+
+type WidgetSimple implements Widget {
+  type: String!
+}
+
+type WidgetList implements Widget {
+  type: String!,
+  listId: Int!
+}
