@@ -36,5 +36,6 @@ module.exports = [
   requireGql(path.join(__dirname, './Lists.graphql')),
   requireGql(path.join(__dirname, './Calendar.graphql')),
   requireGql(path.join(__dirname, './Events.graphql')),
-  requireGql(path.join(__dirname, './Widget.graphql'))
+  requireGql(path.join(__dirname, './Widget.graphql')),
+  requireGql(path.join(__dirname, './Conversation.graphql'))
 ]

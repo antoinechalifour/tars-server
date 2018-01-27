@@ -8,8 +8,8 @@ module.exports = function WidgetService ({ logging, listsService }) {
 
       return [
         { type: 'weather' },
-        { type: 'rss' },
         { type: 'lights' },
+        // { type: 'rss' },
         { type: 'calendar' },
         ...lists.map(x => ({
           type: 'list',

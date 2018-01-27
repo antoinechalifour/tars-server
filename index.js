@@ -38,7 +38,8 @@ container.register({
   weatherService: asFunction(require('./src/services/Weather')),
   listsService: asFunction(require('./src/services/Lists')),
   calendarService: asFunction(require('./src/services/Calendar/Google')),
-  widgetsService: asFunction(require('./src/services/Widgets'))
+  widgetsService: asFunction(require('./src/services/Widgets')),
+  nlpService: asFunction(require('./src/services/NLP/Wit'))
 })
 
 // App configuration

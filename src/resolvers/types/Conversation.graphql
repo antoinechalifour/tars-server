@@ -1,0 +1,11 @@
+type Conversation {
+  text: String!
+}
+
+input ConversationIn {
+  text: String!
+}
+
+type ConversationOut {
+  conversation: Conversation!
+}

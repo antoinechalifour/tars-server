@@ -8,5 +8,7 @@ type RootMutation {
   ${requireGql(path.join(__dirname, './lists.graphql'))}
 
   ${requireGql(path.join(__dirname, './rss.graphql'))}
+
+  ${requireGql(path.join(__dirname, './conversation.graphql'))}
 }
 `

@@ -13,6 +13,7 @@ module.exports = container => {
   const listsService = container.resolve('listsService')
   const calendarService = container.resolve('calendarService')
   const widgetsService = container.resolve('widgetsService')
+  const nlpService = container.resolve('nlpService')
   const events = container.resolve('events')
   const pubSub = container.resolve('pubSub')
   const serverPosition = {
@@ -162,6 +163,14 @@ module.exports = container => {
           await rssService.deleteSource(input.id)
 
           return { source }
+        },
+
+        conversation: async (_, { input }) => {
+          const response = await nlpService.process(input.text)
+
+          return {
+            conversation: { text: response }
+          }
         }
       },
       RootSubscription: {
